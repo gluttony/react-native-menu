@@ -1,14 +1,20 @@
+const path = require('path');
+
 const project = (() => {
   try {
-    const { configureProjects } = require('react-native-test-app');
-    return configureProjects({
+    const {
+      androidManifestPath,
+      iosProjectPath,
+    } = require('react-native-test-app');
+    const iosProject = iosProjectPath('ios');
+    return {
       android: {
         sourceDir: 'android',
+        manifestPath: androidManifestPath(path.join(__dirname, 'android')),
       },
-      ios: {
-        sourceDir: 'ios',
-      },
-    });
+
+      ...(iosProject ? { ios: { project: iosProject } } : undefined),
+    };
   } catch (_) {
     return undefined;
   }
@@ -16,4 +22,9 @@ const project = (() => {
 
 module.exports = {
   ...(project ? { project } : undefined),
+  dependencies: {
+    'react-native-menu': {
+      root: path.join(__dirname, '..'),
+    },
+  },
 };

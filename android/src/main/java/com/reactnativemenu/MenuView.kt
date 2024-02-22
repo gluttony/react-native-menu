@@ -1,5 +1,6 @@
 package com.reactnativemenu
 
+import android.content.Context
 import android.content.res.ColorStateList
 import android.content.res.Resources
 import android.graphics.Color
@@ -18,7 +19,10 @@ import java.lang.reflect.Field
 class MenuView(private val mContext: ReactContext): ReactViewGroup(mContext) {
   private lateinit var mActions: ReadableArray
   private var mIsAnchoredToRight = false
-  private val mPopupMenu: PopupMenu = PopupMenu(context, this)
+  private var mThemeVariant = "light"
+  private var mPopupMenu: PopupMenu = PopupMenu(context, this)
+  private val mLightContextWrapper = ContextThemeWrapper(context, R.style.LightPopupMenu)
+  private val mDarkContextWrapper = ContextThemeWrapper(context, R.style.DarkPopupMenu)
   private var mIsMenuDisplayed = false
   private var mIsOnLongPress = false
   private var mGestureDetector: GestureDetector
@@ -66,6 +70,15 @@ class MenuView(private val mContext: ReactContext): ReactViewGroup(mContext) {
       return
     }
     mIsAnchoredToRight = isAnchoredToRight
+  }
+
+  fun setThemeVariant(themeVariant: String) {
+    if (mThemeVariant == themeVariant) {
+      return
+    }
+    mThemeVariant = themeVariant
+    val wrapper: Context = if (themeVariant == "light") mLightContextWrapper else mDarkContextWrapper
+    mPopupMenu = PopupMenu(wrapper, this@MenuView)
   }
 
   fun setIsOpenOnLongPress(isLongPress: Boolean) {

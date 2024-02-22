@@ -112,10 +112,10 @@ type MenuComponentPropsBase = {
    */
   title?: string;
   /**
-   * (Android API 23+)
    * Boolean value determines whether popup menu should be anchored
-   * to right corner of parent view - default value is `false`
-   * @platform Android
+   * to right corner of parent view
+   *
+   * @default false
    */
   isAnchoredToRight?: boolean;
   /**
@@ -126,9 +126,6 @@ type MenuComponentPropsBase = {
   shouldOpenOnLongPress?: boolean;
   /**
    * Overrides theme variant of menu to light mode, dark mode or system theme
-   * (Only support iOS for now)
-   *
-   * @platform iOS
    */
   themeVariant?: string;
 };

@@ -1,12 +1,12 @@
 import * as React from 'react';
-import { Platform, StyleSheet, Text, View } from 'react-native';
-import { MenuView } from '@react-native-menu/menu';
+import { Platform, StyleSheet, Text, Button, View } from 'react-native';
+import { MenuView } from 'react-native-menu';
 
 export const App = () => {
-  const [themeVariant] = React.useState<string | undefined>('light');
+  const [themeVariant, setThemeVariant] = React.useState<string>('light');
 
   return (
-    <View style={styles.container}>
+    <View style={themeStyles(themeVariant).container}>
       <MenuView
         title="Menu Title"
         onPressAction={({ nativeEvent }) => {
@@ -161,23 +161,27 @@ export const App = () => {
             }),
           },
         ]}
-        shouldOpenOnLongPress={true}
+        shouldOpenOnLongPress={false}
         themeVariant={themeVariant}
+        isAnchoredToRight
       >
         <View style={styles.button}>
           <Text style={styles.buttonText}>Test</Text>
         </View>
       </MenuView>
+      <View style={styles.themeBtn}>
+        <Button
+          title={themeVariant === 'light' ? 'dark' : 'light'}
+          onPress={() => {
+            setThemeVariant(themeVariant === 'light' ? 'dark' : 'light');
+          }}
+        />
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   button: {
     height: 100,
     width: 100,
@@ -187,4 +191,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   buttonText: { color: 'white' },
+  themeBtn: {
+    marginTop: 20,
+  },
 });
+
+const themeStyles = (theme: string) =>
+  StyleSheet.create({
+    container: {
+      backgroundColor: theme === 'light' ? 'white' : 'black',
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'space-around',
+    },
+  });

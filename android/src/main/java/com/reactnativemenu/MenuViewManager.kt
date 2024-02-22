@@ -29,6 +29,12 @@ class MenuViewManager: ReactClippingViewManager<MenuView>() {
     view.setActions(actions)
   }
 
+  @ReactProp(name = "themeVariant")
+  fun setThemeVariant(view: MenuView, themeVariant: String?) {
+    val theme = if (themeVariant == "dark") "dark" else "light"
+    view.setThemeVariant(theme)
+  }
+
   @ReactProp(name = "isAnchoredToRight", defaultBoolean = false)
   fun setIsAnchoredToRight(view: MenuView, isAnchoredToRight: Boolean) {
     view.setIsAnchoredToRight(isAnchoredToRight)

@@ -1,26 +1,26 @@
-# @react-native-menu/menu
+# react-native-menu
 
 ![Supports Android, iOS][support-badge]![Github Action Badge][gha-badge] ![npm][npm-badge]
 
 Android PopupMenu and iOS14+ UIMenu components for react-native.
 Falls back to ActionSheet for versions below iOS14.
 
-| Android                                                                                                                        | iOS 14+                                                                                                                        | iOS 13                                                                                                                        |
-| ------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------- |
-| <img src="https://user-images.githubusercontent.com/6936373/112418277-827ac380-8d6c-11eb-96e2-324487ff3dde.png" width="320" /> | <img src="https://user-images.githubusercontent.com/6936373/112418272-80b10000-8d6c-11eb-9edb-f91eeff0877e.png" width="320" /> | <img src="https://user-images.githubusercontent.com/6936373/98471162-cb9f0080-222d-11eb-89ef-9342a1f10893.png" width="320" /> |
+| Android (light theme)                                                                                                        | Android (dark theme)                                                                                                              | iOS 14+                                                                                                                        | iOS 13                                                                                                                        |
+| ------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------- |
+| <img src="https://github.com/gluttony/react-native-menu/blob/main/screenshots/112418277-827ac380-8d6c-11eb-96e2-324487ff3dde.png" width="320" /> | <img src="https://github.com/gluttony/react-native-menu/blob/main/screenshots/e0edcea8-1f55-4c12-801d-d05698a5a301.png" width="320" /> | <img src="https://github.com/gluttony/react-native-menu/blob/main/screenshots/112418272-80b10000-8d6c-11eb-9edb-f91eeff0877e.png" width="320" /> | <img src="https://github.com/gluttony/react-native-menu/blob/main/screenshots/98471162-cb9f0080-222d-11eb-89ef-9342a1f10893.png" width="320" /> |
 
 ## Installation
 
 via npm:
 
 ```sh
-npm install @react-native-menu/menu
+npm install gluttony/react-native-menu#commit_hash
 ```
 
 via yarn:
 
 ```sh
-yarn add @react-native-menu/menu
+yarn add gluttony/react-native-menu#commit_hash
 ```
 
 ### Installing on iOS with React Native 0.63 and above
@@ -40,7 +40,7 @@ npx pod-install
 ## Usage
 
 ```jsx
-import { MenuView } from '@react-native-menu/menu';
+import { MenuView } from 'react-native-menu';
 
 // ...
 
@@ -134,7 +134,7 @@ The title of the menu.
 | ------ | -------- |
 | string | No       |
 
-### `isAnchoredToRight` (Android only)
+### `isAnchoredToRight`
 
 Boolean determining if menu should anchored to right or left corner of parent view.
 
@@ -157,8 +157,6 @@ Actions to be displayed in the menu.
 | Type         | Required |
 | ------------ | -------- |
 | MenuAction[] | Yes      |
-
-### `themeVariant` (iOS only)
 
 String to override theme of the menu. If you want to control theme universally across your app, [see this package](https://github.com/vonovak/react-native-theme-control).
 

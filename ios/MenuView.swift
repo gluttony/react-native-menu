@@ -9,6 +9,15 @@ import UIKit
 @available(iOS 14.0, *)
 @objc(MenuView)
 class MenuView: UIButton {
+     override func menuAttachmentPoint(for configuration: UIContextMenuConfiguration) -> CGPoint {
+        let original = super.menuAttachmentPoint(for: configuration)
+
+        if (self.isAnchoredToRight) {
+          return CGPoint(x: UIScreen.main.bounds.width - 70, y: original.y)
+        }
+
+        return original
+     }
 
     private var _actions: [UIMenuElement] = [];
     @objc var actions: [NSDictionary]? {
@@ -41,6 +50,8 @@ class MenuView: UIButton {
             self.setup()
         }
     }
+
+    @objc var isAnchoredToRight: Bool = false
 
     private var _themeVariant: String?
     @objc var themeVariant: NSString? {

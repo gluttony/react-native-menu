@@ -24,4 +24,9 @@ RCT_EXPORT_VIEW_PROPERTY(shouldOpenOnLongPress, BOOL)
  */
 RCT_EXPORT_VIEW_PROPERTY(themeVariant, NSString)
 
+/**
+ * Boolean value determines whether UIMenu should be anchored to right corner of parent view
+ */
+RCT_EXPORT_VIEW_PROPERTY(isAnchoredToRight, BOOL)
+
 @end
