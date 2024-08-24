@@ -118,7 +118,7 @@ class MenuViewManager: ReactClippingViewManager<MenuView>() {
     if (hitSlop == null) {
       view.setHitSlopRect(null)
     } else {
-      view.setHitSlopRect(Rectt(
+      view.setHitSlopRect(Rect(
         if (hitSlop.hasKey("left")) PixelUtil.toPixelFromDIP(hitSlop.getDouble("left")).toInt() else 0,
         if (hitSlop.hasKey("top")) PixelUtil.toPixelFromDIP(hitSlop.getDouble("top")).toInt() else 0,
         if (hitSlop.hasKey("right")) PixelUtil.toPixelFromDIP(hitSlop.getDouble("right")).toInt() else 0,
