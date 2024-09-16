@@ -1,8 +1,8 @@
-import * as React from 'react';
+import React from 'react';
 import { Platform, StyleSheet, Text, Button, View } from 'react-native';
 import { MenuView } from 'react-native-menu';
 
-export const App = () => {
+export default function App() {
   const [themeVariant, setThemeVariant] = React.useState<string>('light');
 
   return (
@@ -166,7 +166,7 @@ export const App = () => {
         isAnchoredToRight
       >
         <View style={styles.button}>
-          <Text style={styles.buttonText}>Test</Text>
+          <Text style={themeStyles(themeVariant).buttonText}>Test</Text>
         </View>
       </MenuView>
       <View style={styles.themeBtn}>
@@ -179,9 +179,13 @@ export const App = () => {
       </View>
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    justifyContent: 'center',
+  },
   button: {
     height: 100,
     width: 100,
@@ -190,7 +194,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  buttonText: { color: 'white' },
   themeBtn: {
     marginTop: 20,
   },
@@ -204,4 +207,5 @@ const themeStyles = (theme: string) =>
       alignItems: 'center',
       justifyContent: 'space-around',
     },
+    buttonText: { color: theme === 'light' ? 'black' : 'white' },
   });

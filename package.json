@@ -2,76 +2,108 @@
   "name": "react-native-menu",
   "version": "0.9.1",
   "description": "UIMenu component for react-native",
-  "main": "lib/commonjs/index",
-  "module": "lib/module/index",
-  "types": "lib/typescript/src/index.d.ts",
-  "react-native": "src/index",
-  "source": "src/index",
+  "source": "./src/index.tsx",
+  "main": "./lib/commonjs/index.js",
+  "module": "./lib/module/index.js",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./lib/typescript/module/src/index.d.ts",
+        "default": "./lib/module/index.js"
+      },
+      "require": {
+        "types": "./lib/typescript/commonjs/src/index.d.ts",
+        "default": "./lib/commonjs/index.js"
+      }
+    }
+  },
   "files": [
     "src",
     "lib",
     "android",
     "ios",
     "cpp",
-    "react-native-menu.podspec",
-    "!lib/typescript/example",
+    "*.podspec",
+    "!ios/build",
+    "!android/build",
+    "!android/gradle",
+    "!android/gradlew",
+    "!android/gradlew.bat",
+    "!android/local.properties",
     "!**/__tests__",
     "!**/__fixtures__",
-    "!**/__mocks__"
+    "!**/__mocks__",
+    "!**/.*"
   ],
   "scripts": {
+    "example": "yarn workspace react-native-menu-example",
     "test": "jest",
-    "typescript": "tsc --noEmit",
+    "typecheck": "tsc",
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
-    "format": "prettier --write \"**/*.{js,ts,tsx}\" \"!./lib\"",
+    "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib",
     "prepare": "bob build",
-    "release": "release-it",
-    "example": "yarn --cwd example",
-    "pods": "cd example && pod-install --quiet",
-    "bootstrap": "yarn && yarn example && yarn pods"
+    "release": "release-it"
   },
   "keywords": [
     "react-native",
     "ios",
     "android"
   ],
-  "repository": "https://github.com/react-native-menu/menu",
-  "author": "Jesse Katsumata <jesse.katsumata@gmail.com> (https://github.com/Naturalclar)",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gluttony/react-native-menu.git"
+  },
+  "author": "gluttony <gluttony@users.noreply.github.com> (https://github.com/gluttony)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/react-native-menu/menu/issues"
+    "url": "https://github.com/gluttony/react-native-menu/issues"
   },
-  "homepage": "https://github.com/react-native-menu/menu#readme",
+  "homepage": "https://github.com/gluttony/react-native-menu#readme",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
   "devDependencies": {
-    "react-native-builder-bob": "^0.23.2",
-    "@react-native/eslint-config": "^0.74.0",
-    "@release-it/conventional-changelog": "^4.3.0",
-    "@types/jest": "^29.1.2",
-    "@types/react": "^18.2.2",
-    "@types/react-native": "0.72.2",
-    "eslint": "8.56.0",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-ft-flow": "^3.0.0",
-    "eslint-plugin-prettier": "^5.1.2",
-    "jest": "^29.1.2",
-    "metro-react-native-babel-preset": "0.77.0",
-    "pod-install": "^0.1.0",
-    "prettier": "^3.1.1",
-    "react": "18.2.0",
-    "react-native": "0.72.2",
-    "react-native-test-app": "^3.0.1",
-    "release-it": "^14.10.0",
-    "typescript": "4.8.4"
+    "@commitlint/config-conventional": "^17.0.2",
+    "@evilmartians/lefthook": "^1.5.0",
+    "@react-native/eslint-config": "^0.73.1",
+    "@release-it/conventional-changelog": "^5.0.0",
+    "@types/jest": "^29.5.5",
+    "@types/react": "^18.2.44",
+    "commitlint": "^17.0.2",
+    "del-cli": "^5.1.0",
+    "eslint": "^8.51.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.1",
+    "jest": "^29.7.0",
+    "prettier": "^3.0.3",
+    "react": "18.3.1",
+    "react-native": "0.75.3",
+    "react-native-builder-bob": "^0.30.2",
+    "release-it": "^15.0.0",
+    "turbo": "^1.10.7",
+    "typescript": "^5.2.2"
+  },
+  "resolutions": {
+    "@types/react": "^18.2.44"
   },
   "peerDependencies": {
     "react": "*",
     "react-native": "*"
   },
+  "workspaces": [
+    "example"
+  ],
+  "packageManager": "yarn@3.6.1",
   "jest": {
     "preset": "react-native",
     "modulePathIgnorePatterns": [
       "<rootDir>/example/node_modules",
       "<rootDir>/lib/"
+    ]
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
     ]
   },
   "release-it": {
@@ -92,11 +124,13 @@
     }
   },
   "eslintConfig": {
+    "root": true,
     "extends": [
       "@react-native",
       "prettier"
     ],
     "rules": {
+      "react/react-in-jsx-scope": "off",
       "prettier/prettier": [
         "error",
         {
@@ -124,16 +158,30 @@
     "source": "src",
     "output": "lib",
     "targets": [
-      "commonjs",
-      "module",
-      "typescript"
+      [
+        "commonjs",
+        {
+          "esm": true
+        }
+      ],
+      [
+        "module",
+        {
+          "esm": true
+        }
+      ],
+      [
+        "typescript",
+        {
+          "project": "tsconfig.build.json",
+          "esm": true
+        }
+      ]
     ]
   },
-  "publishConfig": {
-    "access": "public"
-  },
-  "volta": {
-    "node": "20.10.0",
-    "yarn": "1.22.21"
+  "create-react-native-library": {
+    "type": "view-legacy",
+    "languages": "kotlin-swift",
+    "version": "0.41.2"
   }
 }

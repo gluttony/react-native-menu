@@ -1,29 +1,19 @@
 const path = require('path');
-
-const project = (() => {
-  try {
-    const {
-      androidManifestPath,
-      iosProjectPath,
-    } = require('react-native-test-app');
-    const iosProject = iosProjectPath('ios');
-    return {
-      android: {
-        sourceDir: 'android',
-        manifestPath: androidManifestPath(path.join(__dirname, 'android')),
-      },
-
-      ...(iosProject ? { ios: { project: iosProject } } : undefined),
-    };
-  } catch (_) {
-    return undefined;
-  }
-})();
+const pkg = require('../package.json');
+const { configureProjects } = require('react-native-test-app');
 
 module.exports = {
-  ...(project ? { project } : undefined),
+  project: configureProjects({
+    android: {
+      sourceDir: 'android',
+    },
+    ios: {
+      sourceDir: 'ios',
+      automaticPodsInstallation: true,
+    },
+  }),
   dependencies: {
-    'react-native-menu': {
+    [pkg.name]: {
       root: path.join(__dirname, '..'),
     },
   },
