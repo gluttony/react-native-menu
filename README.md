@@ -283,6 +283,14 @@ Callback function that will be called when the menu shows
 ### `onMenuDismiss`
 Callback function that will be called when the menu was dismissed
 
+### `disabled`
+
+Boolean determining if menu should be disabled
+
+| Type    | Required |
+| ------- | -------- |
+| boolean | No       |
+
 ## Contributing
 
 See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the repository and the development workflow.
