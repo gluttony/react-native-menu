@@ -16,7 +16,7 @@ import com.facebook.react.views.view.ReactViewGroup
 import java.lang.reflect.Field
 
 
-class MenuView(private val mContext: ReactContext): ReactViewGroup(mContext) {
+class MenuView(private val mContext: ReactContext) : ReactViewGroup(mContext) {
   private lateinit var mActions: ReadableArray
   private var mIsAnchoredToRight = false
   private var mThemeVariant = "light"
@@ -28,21 +28,22 @@ class MenuView(private val mContext: ReactContext): ReactViewGroup(mContext) {
   private var mGestureDetector: GestureDetector
 
   init {
-    mGestureDetector = GestureDetector(mContext, object : GestureDetector.SimpleOnGestureListener() {
-      override fun onLongPress(e: MotionEvent) {
-        if (!mIsOnLongPress) {
-          return
-        }
-        prepareMenu()
-      }
-
-      override fun onSingleTapUp(e: MotionEvent): Boolean {
-        if (!mIsOnLongPress) {
+    mGestureDetector =
+      GestureDetector(mContext, object : GestureDetector.SimpleOnGestureListener() {
+        override fun onLongPress(e: MotionEvent) {
+          if (!mIsOnLongPress) {
+            return
+          }
           prepareMenu()
         }
-        return true
-      }
-    })
+
+        override fun onSingleTapUp(e: MotionEvent): Boolean {
+          if (!mIsOnLongPress) {
+            prepareMenu()
+          }
+          return true
+        }
+      })
   }
 
   override fun onInterceptTouchEvent(ev: MotionEvent?): Boolean {
@@ -77,7 +78,8 @@ class MenuView(private val mContext: ReactContext): ReactViewGroup(mContext) {
       return
     }
     mThemeVariant = themeVariant
-    val wrapper: Context = if (themeVariant == "light") mLightContextWrapper else mDarkContextWrapper
+    val wrapper: Context =
+      if (themeVariant == "light") mLightContextWrapper else mDarkContextWrapper
     mPopupMenu = PopupMenu(wrapper, this@MenuView)
   }
 
@@ -89,26 +91,30 @@ class MenuView(private val mContext: ReactContext): ReactViewGroup(mContext) {
     get() = mActions.size()
 
   private fun prepareMenuItem(menuItem: MenuItem, config: ReadableMap?) {
-    val titleColor = when (config != null && config.hasKey("titleColor") && !config.isNull("titleColor")) {
-      true -> config.getInt("titleColor")
-      else -> null
-    }
+    val titleColor =
+      when (config != null && config.hasKey("titleColor") && !config.isNull("titleColor")) {
+        true -> config.getInt("titleColor")
+        else -> null
+      }
     val imageName = when (config != null && config.hasKey("image") && !config.isNull("image")) {
       true -> config.getString("image")
       else -> null
     }
-    val imageColor = when (config != null && config.hasKey("imageColor") && !config.isNull("imageColor")) {
-      true -> config.getInt("imageColor")
-      else -> null
-    }
-    val attributes = when (config != null && config.hasKey("attributes") && !config.isNull(("attributes"))) {
-      true -> config.getMap("attributes")
-      else -> null
-    }
-    val subactions = when (config != null && config.hasKey("subactions") && !config.isNull(("subactions"))) {
-      true -> config.getArray("subactions")
-      else -> null
-    }
+    val imageColor =
+      when (config != null && config.hasKey("imageColor") && !config.isNull("imageColor")) {
+        true -> config.getInt("imageColor")
+        else -> null
+      }
+    val attributes =
+      when (config != null && config.hasKey("attributes") && !config.isNull(("attributes"))) {
+        true -> config.getMap("attributes")
+        else -> null
+      }
+    val subactions =
+      when (config != null && config.hasKey("subactions") && !config.isNull(("subactions"))) {
+        true -> config.getArray("subactions")
+        else -> null
+      }
 
     if (titleColor != null) {
       menuItem.title = getMenuItemTextWithColor(menuItem.title.toString(), titleColor)
@@ -150,10 +156,11 @@ class MenuView(private val mContext: ReactContext): ReactViewGroup(mContext) {
       menuItem.isVisible = !hidden
 
       // actions.attributes.destructive
-      val destructive = when (attributes.hasKey("destructive") && !attributes.isNull("destructive")) {
-        true -> attributes.getBoolean("destructive")
-        else -> false
-      }
+      val destructive =
+        when (attributes.hasKey("destructive") && !attributes.isNull("destructive")) {
+          true -> attributes.getBoolean("destructive")
+          else -> false
+        }
       if (destructive) {
         menuItem.title = getMenuItemTextWithColor(menuItem.title.toString(), Color.RED)
         if (imageName != null) {
@@ -172,7 +179,8 @@ class MenuView(private val mContext: ReactContext): ReactViewGroup(mContext) {
       while (i < subactionsCount) {
         if (!subactions.isNull(i)) {
           val subMenuConfig = subactions.getMap(i)
-          val subMenuItem = menuItem.subMenu?.add(Menu.NONE, Menu.NONE, i, subMenuConfig?.getString("title"))
+          val subMenuItem =
+            menuItem.subMenu?.add(Menu.NONE, Menu.NONE, i, subMenuConfig?.getString("title"))
           if (subMenuItem != null) {
             prepareMenuItem(subMenuItem, subMenuConfig)
             subMenuItem.setOnMenuItemClickListener {
@@ -215,10 +223,17 @@ class MenuView(private val mContext: ReactContext): ReactViewGroup(mContext) {
       while (i < getActionsCount) {
         if (!mActions.isNull(i)) {
           val item = mActions.getMap(i)
-          val menuItem = when (item != null && item.hasKey("subactions") && !item.isNull("subactions")) {
-            true -> mPopupMenu.menu.addSubMenu(Menu.NONE, Menu.NONE, i, item.getString("title")).item
-            else -> mPopupMenu.menu.add(Menu.NONE, Menu.NONE, i, item?.getString("title"))
-          }
+          val menuItem =
+            when (item != null && item.hasKey("subactions") && !item.isNull("subactions")) {
+              true -> mPopupMenu.menu.addSubMenu(
+                Menu.NONE,
+                Menu.NONE,
+                i,
+                item.getString("title")
+              ).item
+
+              else -> mPopupMenu.menu.add(Menu.NONE, Menu.NONE, i, item?.getString("title"))
+            }
           prepareMenuItem(menuItem, item)
           menuItem.setOnMenuItemClickListener {
             if (!it.hasSubMenu()) {
@@ -242,8 +257,14 @@ class MenuView(private val mContext: ReactContext): ReactViewGroup(mContext) {
       }
       mPopupMenu.setOnDismissListener {
         mIsMenuDisplayed = false
+        mContext
+          .getJSModule(RCTEventEmitter::class.java)
+          .receiveEvent(id, "onMenuDismiss", null)
       }
       mIsMenuDisplayed = true
+      mContext
+        .getJSModule(RCTEventEmitter::class.java)
+        .receiveEvent(id, "onMenuShow", null)
       mPopupMenu.show()
     }
   }
@@ -271,8 +292,10 @@ class MenuView(private val mContext: ReactContext): ReactViewGroup(mContext) {
   private fun getMenuItemTextWithColor(text: String, color: Int): SpannableStringBuilder {
     val textWithColor = SpannableStringBuilder()
     textWithColor.append(text)
-    textWithColor.setSpan(ForegroundColorSpan(color),
-      0, text.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+    textWithColor.setSpan(
+      ForegroundColorSpan(color),
+      0, text.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+    )
     return textWithColor
   }
 }

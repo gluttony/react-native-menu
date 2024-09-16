@@ -17,7 +17,7 @@ import com.facebook.react.views.view.ReactDrawableHelper
 import com.facebook.react.views.view.ReactViewGroup
 import com.facebook.yoga.YogaConstants
 
-class MenuViewManager: ReactClippingViewManager<MenuView>() {
+class MenuViewManager : ReactClippingViewManager<MenuView>() {
   override fun getName() = "MenuView"
 
   override fun createViewInstance(reactContext: ThemedReactContext): MenuView {
@@ -48,7 +48,11 @@ class MenuViewManager: ReactClippingViewManager<MenuView>() {
   override fun getExportedCustomDirectEventTypeConstants(): MutableMap<String, Any> {
     return MapBuilder.of(
       "onPressAction",
-      MapBuilder.of("registrationName", "onPressAction")
+      MapBuilder.of("registrationName", "onPressAction"),
+      "onMenuShow",
+      MapBuilder.of("registrationName", "onMenuShow"),
+      "onMenuDismiss",
+      MapBuilder.of("registrationName", "onMenuDismiss")
     )
   }
 
@@ -118,29 +122,44 @@ class MenuViewManager: ReactClippingViewManager<MenuView>() {
     if (hitSlop == null) {
       view.setHitSlopRect(null)
     } else {
-      view.setHitSlopRect(Rect(
-        if (hitSlop.hasKey("left")) PixelUtil.toPixelFromDIP(hitSlop.getDouble("left")).toInt() else 0,
-        if (hitSlop.hasKey("top")) PixelUtil.toPixelFromDIP(hitSlop.getDouble("top")).toInt() else 0,
-        if (hitSlop.hasKey("right")) PixelUtil.toPixelFromDIP(hitSlop.getDouble("right")).toInt() else 0,
-        if (hitSlop.hasKey("bottom")) PixelUtil.toPixelFromDIP(hitSlop.getDouble("bottom")).toInt() else 0))
+      view.setHitSlopRect(
+        Rect(
+          if (hitSlop.hasKey("left")) PixelUtil.toPixelFromDIP(hitSlop.getDouble("left"))
+            .toInt() else 0,
+          if (hitSlop.hasKey("top")) PixelUtil.toPixelFromDIP(hitSlop.getDouble("top"))
+            .toInt() else 0,
+          if (hitSlop.hasKey("right")) PixelUtil.toPixelFromDIP(hitSlop.getDouble("right"))
+            .toInt() else 0,
+          if (hitSlop.hasKey("bottom")) PixelUtil.toPixelFromDIP(hitSlop.getDouble("bottom"))
+            .toInt() else 0
+        )
+      )
     }
   }
 
   @ReactProp(name = "nativeBackgroundAndroid")
   fun setNativeBackground(view: ReactViewGroup, @Nullable bg: ReadableMap?) {
     view.setTranslucentBackgroundDrawable(
-      if (bg == null) null else ReactDrawableHelper.createDrawableFromJSDescription(view.context, bg))
+      if (bg == null) null else ReactDrawableHelper.createDrawableFromJSDescription(
+        view.context,
+        bg
+      )
+    )
   }
 
   @TargetApi(Build.VERSION_CODES.M)
   @ReactProp(name = "nativeForegroundAndroid")
   fun setNativeForeground(view: ReactViewGroup, @Nullable fg: ReadableMap?) {
-    view.foreground = if (fg == null) null else ReactDrawableHelper.createDrawableFromJSDescription(view.context, fg)
+    view.foreground = if (fg == null) null else ReactDrawableHelper.createDrawableFromJSDescription(
+      view.context,
+      fg
+    )
   }
 
   @ReactProp(name = ViewProps.NEEDS_OFFSCREEN_ALPHA_COMPOSITING)
   fun setNeedsOffscreenAlphaCompositing(
-    view: ReactViewGroup, needsOffscreenAlphaCompositing: Boolean) {
+    view: ReactViewGroup, needsOffscreenAlphaCompositing: Boolean
+  ) {
     view.setNeedsOffscreenAlphaCompositing(needsOffscreenAlphaCompositing)
   }
 
@@ -156,9 +175,13 @@ class MenuViewManager: ReactClippingViewManager<MenuView>() {
     view.setBorderWidth(SPACING_TYPES[index], width)
   }
 
-  @ReactPropGroup(names = [ViewProps.BORDER_COLOR, ViewProps.BORDER_LEFT_COLOR, ViewProps.BORDER_RIGHT_COLOR, ViewProps.BORDER_TOP_COLOR, ViewProps.BORDER_BOTTOM_COLOR, ViewProps.BORDER_START_COLOR, ViewProps.BORDER_END_COLOR], customType = "Color")
+  @ReactPropGroup(
+    names = [ViewProps.BORDER_COLOR, ViewProps.BORDER_LEFT_COLOR, ViewProps.BORDER_RIGHT_COLOR, ViewProps.BORDER_TOP_COLOR, ViewProps.BORDER_BOTTOM_COLOR, ViewProps.BORDER_START_COLOR, ViewProps.BORDER_END_COLOR],
+    customType = "Color"
+  )
   fun setBorderColor(view: ReactViewGroup, index: Int, color: Int?) {
-    val rgbComponent = if (color == null) YogaConstants.UNDEFINED else (color and 0x00FFFFFF).toFloat()
+    val rgbComponent =
+      if (color == null) YogaConstants.UNDEFINED else (color and 0x00FFFFFF).toFloat()
     val alphaComponent = if (color == null) YogaConstants.UNDEFINED else (color ushr 24).toFloat()
     view.setBorderColor(SPACING_TYPES[index], rgbComponent, alphaComponent)
   }
