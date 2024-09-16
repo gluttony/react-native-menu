@@ -10,7 +10,7 @@ export default function App() {
       <MenuView
         title="Menu Title"
         onPressAction={({ nativeEvent }) => {
-          console.warn(JSON.stringify(nativeEvent));
+          console.log(JSON.stringify(nativeEvent));
         }}
         actions={[
           {
@@ -164,6 +164,12 @@ export default function App() {
         shouldOpenOnLongPress={false}
         themeVariant={themeVariant}
         isAnchoredToRight
+        onMenuShow={() => {
+          console.log('onMenuShow');
+        }}
+        onMenuDismiss={() => {
+          console.log('onMenuDismiss');
+        }}
       >
         <View style={styles.button}>
           <Text style={themeStyles(themeVariant).buttonText}>Test</Text>

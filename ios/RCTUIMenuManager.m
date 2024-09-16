@@ -28,5 +28,13 @@ RCT_EXPORT_VIEW_PROPERTY(themeVariant, NSString)
  * Boolean value determines whether UIMenu should be anchored to right corner of parent view
  */
 RCT_EXPORT_VIEW_PROPERTY(isAnchoredToRight, BOOL)
+/**
+ * onMenuShow: callback when menu shows
+ */
+RCT_EXPORT_VIEW_PROPERTY(onMenuShow, RCTDirectEventBlock);
+/**
+ * onMenuDismiss: callback when menu shows
+ */
+RCT_EXPORT_VIEW_PROPERTY(onMenuDismiss, RCTDirectEventBlock);
 
 @end

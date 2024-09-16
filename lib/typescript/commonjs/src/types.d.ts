@@ -118,6 +118,14 @@ type MenuComponentPropsBase = {
      * Overrides theme variant of menu to light mode, dark mode or system theme
      */
     themeVariant?: string;
+    /**
+     * Callback function that will be called when menu shows
+     */
+    onMenuShow?: () => void;
+    /**
+     * Callback function that will be called when menu dismissed
+     */
+    onMenuDismiss?: () => void;
 };
 export type MenuComponentProps = React.PropsWithChildren<MenuComponentPropsBase>;
 export type ProcessedMenuAction = Omit<MenuAction, 'imageColor' | 'titleColor' | 'subactions'> & {
@@ -130,6 +138,8 @@ export type NativeMenuComponentProps = {
     onPressAction?: ({ nativeEvent }: NativeActionEvent) => void;
     actions: ProcessedMenuAction[];
     title?: string;
+    onMenuShow?: () => void;
+    onMenuDismiss?: () => void;
 };
 export {};
 //# sourceMappingURL=types.d.ts.map

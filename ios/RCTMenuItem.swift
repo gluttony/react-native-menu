@@ -5,13 +5,13 @@
 //  Created by Jesse Katsumata on 11/8/20.
 //
 
-import UIKit;
+import UIKit
 
 @available(iOS 13.0, *)
 class RCTMenuAction {
 
-    var identifier: UIAction.Identifier?;
-    var title: String;
+    var identifier: UIAction.Identifier?
+    var title: String
     var subtitle: String?
     var displayInline: Bool
     var image: UIImage?
@@ -19,33 +19,34 @@ class RCTMenuAction {
     var state: UIAction.State = .off
     var subactions: [RCTMenuAction] = []
 
-    init(details: NSDictionary){
+    init(details: NSDictionary) {
 
         if let identifier = details["id"] as? NSString {
-            self.identifier = UIAction.Identifier(rawValue: identifier as String);
+            self.identifier = UIAction.Identifier(rawValue: identifier as String)
         }
 
         if let image = details["image"] as? NSString {
-            self.image = UIImage(systemName: image as String);
+            self.image = UIImage(systemName: image as String)
             if let imageColor = details["imageColor"] {
-                self.image = self.image?.withTintColor(RCTConvert.uiColor(imageColor), renderingMode: .alwaysOriginal)
+                self.image = self.image?.withTintColor(
+                    RCTConvert.uiColor(imageColor), renderingMode: .alwaysOriginal)
             }
         }
 
         if let title = details["title"] as? NSString {
-            self.title = title as String;
+            self.title = title as String
         } else {
-            self.title = "";
+            self.title = ""
         }
 
         if let subtitle = details["subtitle"] as? NSString {
-            self.subtitle = subtitle as String;
+            self.subtitle = subtitle as String
         }
 
         if let displayInline = details["displayInline"] as? Bool {
-            self.displayInline = displayInline as Bool;
+            self.displayInline = displayInline as Bool
         } else {
-            self.displayInline = false;
+            self.displayInline = false
         }
 
         if let attributes = details["attributes"] as? NSDictionary {
@@ -61,13 +62,13 @@ class RCTMenuAction {
         }
 
         if let state = details["state"] as? NSString {
-            if state=="on" {
+            if state == "on" {
                 self.state = .on
             }
-            if state=="off" {
+            if state == "off" {
                 self.state = .off
             }
-            if state=="mixed" {
+            if state == "mixed" {
                 self.state = .mixed
             }
         }
@@ -80,7 +81,6 @@ class RCTMenuAction {
             }
         }
 
-
     }
 
     func createUIMenuElement(_ handler: @escaping UIActionHandler) -> UIMenuElement {
@@ -90,16 +90,21 @@ class RCTMenuAction {
                 subMenuActions.append(subaction.createUIMenuElement(handler))
             }
             if self.displayInline {
-                return UIMenu(title: title, image: image, options: .displayInline, children: subMenuActions)
+                return UIMenu(
+                    title: title, image: image, options: .displayInline, children: subMenuActions)
             } else {
                 return UIMenu(title: title, image: image, children: subMenuActions)
             }
         }
 
         if #available(iOS 15, *) {
-            return UIAction(title: title, subtitle: subtitle, image: image, identifier: identifier, attributes: attributes, state: state, handler: handler)
+            return UIAction(
+                title: title, subtitle: subtitle, image: image, identifier: identifier,
+                attributes: attributes, state: state, handler: handler)
         } else {
-            return UIAction(title: title, image: image, identifier: identifier, discoverabilityTitle: subtitle, attributes: attributes, state: state, handler: handler)
+            return UIAction(
+                title: title, image: image, identifier: identifier, discoverabilityTitle: subtitle,
+                attributes: attributes, state: state, handler: handler)
         }
     }
 }

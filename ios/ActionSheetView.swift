@@ -7,14 +7,38 @@
 
 import UIKit
 
+class MenuAlertController: UIAlertController {
+    var onMenuShow: RCTDirectEventBlock?
+    var onMenuDismiss: RCTDirectEventBlock?
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        if let onMenuShow = onMenuShow {
+            onMenuShow(nil)
+        }
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        if let onMenuDismiss = onMenuDismiss {
+            onMenuDismiss(nil)
+        }
+    }
+}
 
 @objc(ActionSheetView)
 class ActionSheetView: UIView {
+    @objc var onMenuShow: RCTDirectEventBlock?
+    @objc var onMenuDismiss: RCTDirectEventBlock?
     @objc var onPressAction: RCTDirectEventBlock?
     private var _title: String?
     @objc var title: NSString? {
         didSet { self._title = title as? String }
     }
+
+    @objc var isAnchoredToRight: Bool = false
 
     private var _actions: [UIAlertAction] = []
     @objc var actions: [NSDictionary]? {
@@ -25,9 +49,9 @@ class ActionSheetView: UIView {
             _actions.removeAll()
             actions.forEach({ alertAction in
                 if let action = RCTAlertAction(details: alertAction).createAction({
-                event in self.sendButtonAction(event)
-            }) {
-                  _actions.append(action)
+                    event in self.sendButtonAction(event)
+                }) {
+                    _actions.append(action)
                 }
             })
         }
@@ -42,16 +66,19 @@ class ActionSheetView: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        let tap = UITapGestureRecognizer(target: self, action: #selector (self.handleTap (_:)))
-        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(self.handleLongPress(_:)))
+        let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(_:)))
+        let longPress = UILongPressGestureRecognizer(
+            target: self, action: #selector(self.handleLongPress(_:)))
         self.addGestureRecognizer(tap)
         self.addGestureRecognizer(longPress)
     }
 
     func launchActionSheet() {
 
-        let alert = UIAlertController(title: _title, message: nil, preferredStyle: .actionSheet)
-        
+        let alert = MenuAlertController(title: _title, message: nil, preferredStyle: .actionSheet)
+        alert.onMenuShow = self.onMenuShow
+        alert.onMenuDismiss = self.onMenuDismiss
+
         if #available(iOS 13.0, *) {
             if self._themeVariant != nil {
                 if self._themeVariant == "dark" {
@@ -64,7 +91,7 @@ class ActionSheetView: UIView {
             }
         }
 
-        self._actions.forEach({action in
+        self._actions.forEach({ action in
             alert.addAction(action.copy() as! UIAlertAction)
         })
 
@@ -82,8 +109,7 @@ class ActionSheetView: UIView {
 
     }
 
-
-    @objc func handleTap(_ sender:UITapGestureRecognizer) {
+    @objc func handleTap(_ sender: UITapGestureRecognizer) {
         if shouldOpenOnLongPress {
             return
         }
@@ -107,7 +133,7 @@ class ActionSheetView: UIView {
 
     @objc func sendButtonAction(_ action: String) {
         if let onPress = onPressAction {
-            onPress(["event":action])
+            onPress(["event": action])
         }
     }
 
@@ -116,7 +142,7 @@ class ActionSheetView: UIView {
     }
 
     override func reactSetFrame(_ frame: CGRect) {
-      super.reactSetFrame(frame)
+        super.reactSetFrame(frame)
     }
 
 }
