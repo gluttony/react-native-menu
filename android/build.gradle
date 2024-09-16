@@ -49,7 +49,7 @@ def supportsNamespace() {
 
 android {
   if (supportsNamespace()) {
-    namespace "com.menu"
+    namespace "com.reactnativemenu"
 
     sourceSets {
       main {
