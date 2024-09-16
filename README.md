@@ -112,6 +112,12 @@ const App = () => {
           },
         ]}
         shouldOpenOnLongPress={false}
+        onMenuShow={() => {
+          console.log('onMenuShow');
+        }}
+        onMenuDismiss={() => {
+          console.log('onMenuDismiss');
+        }}
       >
         <View style={styles.button}>
           <Text style={styles.buttonText}>Test</Text>
@@ -270,6 +276,12 @@ It will contain id of the given action.
 | Type                    | Required |
 | ----------------------- | -------- |
 | ({nativeEvent}) => void | No       |
+
+### `onMenuShow`
+Callback function that will be called when the menu shows
+
+### `onMenuDismiss`
+Callback function that will be called when the menu was dismissed
 
 ## Contributing
 
