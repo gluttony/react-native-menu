@@ -4,6 +4,7 @@ import { MenuView } from 'react-native-menu';
 
 export default function App() {
   const [themeVariant, setThemeVariant] = React.useState<string>('light');
+  const [disabled, setDisabled] = React.useState<boolean>(false);
 
   return (
     <View style={themeStyles(themeVariant).container}>
@@ -170,6 +171,7 @@ export default function App() {
         onMenuDismiss={() => {
           console.log('onMenuDismiss');
         }}
+        disabled={disabled}
       >
         <View style={styles.button}>
           <Text style={themeStyles(themeVariant).buttonText}>Test</Text>
@@ -180,6 +182,12 @@ export default function App() {
           title={themeVariant === 'light' ? 'dark' : 'light'}
           onPress={() => {
             setThemeVariant(themeVariant === 'light' ? 'dark' : 'light');
+          }}
+        />
+        <Button
+          title={disabled ? 'Enable' : 'Disable'}
+          onPress={() => {
+            setDisabled(!disabled);
           }}
         />
       </View>
@@ -202,6 +210,8 @@ const styles = StyleSheet.create({
   },
   themeBtn: {
     marginTop: 20,
+    flex: 0.2,
+    justifyContent: 'space-around',
   },
 });
 

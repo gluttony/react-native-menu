@@ -45,6 +45,11 @@ class MenuViewManager : ReactClippingViewManager<MenuView>() {
     view.setIsOpenOnLongPress(isOnLongPress)
   }
 
+  @ReactProp(name = "disabled", defaultBoolean = false)
+  fun setDisabled(view: MenuView, isDisabled: Boolean) {
+    view.setDisabled(isDisabled)
+  }
+
   override fun getExportedCustomDirectEventTypeConstants(): MutableMap<String, Any> {
     return MapBuilder.of(
       "onPressAction",

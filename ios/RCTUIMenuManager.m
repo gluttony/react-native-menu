@@ -36,5 +36,9 @@ RCT_EXPORT_VIEW_PROPERTY(onMenuShow, RCTDirectEventBlock);
  * onMenuDismiss: callback when menu shows
  */
 RCT_EXPORT_VIEW_PROPERTY(onMenuDismiss, RCTDirectEventBlock);
+/**
+ * disabled: determines whether menu should be disabled
+ */
+RCT_EXPORT_VIEW_PROPERTY(disabled, BOOL)
 
 @end

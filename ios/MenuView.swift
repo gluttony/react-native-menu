@@ -60,6 +60,12 @@ class MenuView: UIButton {
 
     @objc var isAnchoredToRight: Bool = false
 
+    @objc var disabled: Bool = false {
+        didSet {
+            self.setup()
+        }
+    }
+
     private var _themeVariant: String?
     @objc var themeVariant: NSString? {
         didSet {
@@ -90,6 +96,7 @@ class MenuView: UIButton {
         let interaction = UIContextMenuInteraction(delegate: self)
         self.addInteraction(interaction)
         self.showsMenuAsPrimaryAction = !shouldOpenOnLongPress
+        self.isEnabled = !disabled
     }
 
     override func reactSetFrame(_ frame: CGRect) {
@@ -113,7 +120,7 @@ class MenuView: UIButton {
     ) {
         super.contextMenuInteraction(
             interaction, willDisplayMenuFor: configuration, animator: animator)
-        
+
         if let onMenuShow = onMenuShow {
             onMenuShow(nil)
         }
@@ -125,7 +132,7 @@ class MenuView: UIButton {
         animator: UIContextMenuInteractionAnimating?
     ) {
         super.contextMenuInteraction(interaction, willEndFor: configuration, animator: animator)
-        
+
         if let onMenuDismiss = onMenuDismiss {
             onMenuDismiss(nil)
         }

@@ -25,6 +25,7 @@ class MenuView(private val mContext: ReactContext) : ReactViewGroup(mContext) {
   private val mDarkContextWrapper = ContextThemeWrapper(context, R.style.DarkPopupMenu)
   private var mIsMenuDisplayed = false
   private var mIsOnLongPress = false
+  private var mDisabled = false
   private var mGestureDetector: GestureDetector
 
   init {
@@ -85,6 +86,10 @@ class MenuView(private val mContext: ReactContext) : ReactViewGroup(mContext) {
 
   fun setIsOpenOnLongPress(isLongPress: Boolean) {
     mIsOnLongPress = isLongPress
+  }
+
+  fun setDisabled(isDisabled: Boolean) {
+    mDisabled = isDisabled
   }
 
   private val getActionsCount: Int
@@ -208,6 +213,11 @@ class MenuView(private val mContext: ReactContext) : ReactViewGroup(mContext) {
   }
 
   private fun prepareMenu() {
+    if (mDisabled) {
+      mIsMenuDisplayed = false
+      return
+    }
+
     if (getActionsCount > 0) {
       mPopupMenu.menu.clear()
       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

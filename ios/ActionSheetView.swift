@@ -39,6 +39,7 @@ class ActionSheetView: UIView {
     }
 
     @objc var isAnchoredToRight: Bool = false
+    @objc var disabled: Bool = false
 
     private var _actions: [UIAlertAction] = []
     @objc var actions: [NSDictionary]? {
@@ -102,11 +103,12 @@ class ActionSheetView: UIView {
             alert.popoverPresentationController?.sourceView = self
             alert.popoverPresentationController?.sourceRect = self.bounds
         }
-
-        if let root = RCTPresentedViewController() {
-            root.present(alert, animated: true, completion: nil)
+        
+        if (!self.disabled) {
+            if let root = RCTPresentedViewController() {
+                root.present(alert, animated: true, completion: nil)
+            }
         }
-
     }
 
     @objc func handleTap(_ sender: UITapGestureRecognizer) {

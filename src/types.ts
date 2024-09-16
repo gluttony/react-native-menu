@@ -136,6 +136,12 @@ type MenuComponentPropsBase = {
    * Callback function that will be called when menu dismissed
    */
   onMenuDismiss?: () => void;
+  /**
+   * Determines if menu should be disabled
+   *
+   * @default false
+   */
+  disabled?: boolean;
 };
 
 export type MenuComponentProps =
