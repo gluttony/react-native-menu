@@ -19,7 +19,7 @@ import java.lang.reflect.Field
 class MenuView(private val mContext: ReactContext) : ReactViewGroup(mContext) {
   private lateinit var mActions: ReadableArray
   private var mIsAnchoredToRight = false
-  private var mThemeVariant = "light"
+  private var mThemeVariant = ""
   private var mPopupMenu: PopupMenu = PopupMenu(context, this)
   private val mLightContextWrapper = ContextThemeWrapper(context, R.style.LightPopupMenu)
   private val mDarkContextWrapper = ContextThemeWrapper(context, R.style.DarkPopupMenu)
